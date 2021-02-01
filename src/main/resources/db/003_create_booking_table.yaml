@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 3
+      id: 003_create_booking_table
       author: shubhampal261
       changes:
         - createTable:

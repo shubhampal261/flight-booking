@@ -5,6 +5,7 @@ import com.arshad.monolith.booking.beans.UserResponse;
 import com.arshad.monolith.booking.mapper.UserMapper;
 import com.arshad.monolith.booking.repo.UserJPARepository;
 import com.arshad.monolith.booking.services.UserService;
+import com.arshad.monolith.booking.utils.exceptions.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,10 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserResponse addUser(User user) {
+        final Optional<User> userOpt = userRepository.findByEmail(user.getEmail());
+        if (userOpt.isPresent()) {
+            throw new BadRequestException("email is already present in the system");
+        }
         user = userRepository.save(user);
         return UserMapper.INSTANCE.mapToUserResponseModel(user);
     }

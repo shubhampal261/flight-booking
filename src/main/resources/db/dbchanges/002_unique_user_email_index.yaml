@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002_unique_user_email_index
+      author: shubhampal261
+      changes:
+        - createIndex:
+            tableName: users
+            indexName: users_unique_email
+            unique: true
+            columns:
+              - column:
+                  name: email

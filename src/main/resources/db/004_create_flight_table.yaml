@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 2
+      id: 004_create_flight_table
       author: shubhampal261
       changes:
         - createTable:
