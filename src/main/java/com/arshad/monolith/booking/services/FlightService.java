@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface FlightService {
 
-    public List<FlightResponse> getAllFlights();
+    List<FlightResponse> getAllFlights();
 
-    public FlightResponse getFlightByID(int id);
+    FlightResponse getFlightByID(int id);
 
-    public FlightResponse addFlight(Flight flight);
+    FlightResponse addFlight(Flight flight);
 
-    public FlightResponse deleteFlightById(int id);
+    FlightResponse deleteFlightById(int id);
 }

@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      id: 006.1_create_loyalty_table
+      author: shubhampal261
+      changes:
+        - createTable:
+            tableName: loyalty
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: points
+                  type: decimal
+                  defaultValue: 0.0
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 006.2_add_foreign_key_into_loyalty
+      author: shubhampal261
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: loyalty
+            constraintName: loyalty_user_fk
+            onDelete: CASCADE
+            onUpdate: CASCADE
+            referencedColumnNames: id
+            referencedTableName: users
+            validate: true

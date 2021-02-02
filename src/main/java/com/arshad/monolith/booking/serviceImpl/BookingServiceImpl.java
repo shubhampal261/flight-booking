@@ -1,12 +1,15 @@
 package com.arshad.monolith.booking.serviceImpl;
 
-import com.arshad.monolith.booking.beans.Booking;
-import com.arshad.monolith.booking.beans.BookingResponse;
+import com.arshad.monolith.booking.beans.*;
 import com.arshad.monolith.booking.mapper.BookingMapper;
 import com.arshad.monolith.booking.mapper.FlightMapper;
 import com.arshad.monolith.booking.mapper.UserMapper;
 import com.arshad.monolith.booking.repo.BookingJPARepository;
 import com.arshad.monolith.booking.services.BookingService;
+import com.arshad.monolith.booking.services.FlightService;
+import com.arshad.monolith.booking.services.LoyaltyService;
+import com.arshad.monolith.booking.services.UserService;
+import com.arshad.monolith.booking.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,15 @@ public class BookingServiceImpl implements BookingService {
 
     @Autowired
     private BookingJPARepository bookingRepository;
+
+    @Autowired
+    private LoyaltyService loyaltyServiceImpl;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private FlightService flightService;
 
     public List<BookingResponse> getAllBookings() {
         List<BookingResponse> bookingList = BookingMapper.INSTANCE.mapToBookingResponseModelList(bookingRepository.findAll());
@@ -43,9 +55,23 @@ public class BookingServiceImpl implements BookingService {
         bookingResponse.setTotalAmount(bookingResponse.getNumberOfSeats() * bookingResponse.getFlightInfo().getRate());
     }
 
-    public BookingResponse addBooking(Booking booking) {
-        booking = bookingRepository.save(booking);
-        return BookingMapper.INSTANCE.mapToBookingResponseModel(booking);
+    public BookingResponse addBooking(final Booking booking) {
+        bookingRepository.save(booking);
+        final BookingResponse bookingResponse = BookingMapper.INSTANCE.mapToBookingResponseModel(booking);
+
+        final UserResponse userResponse = this.userService.getUserByID(booking.getUserId());
+        bookingResponse.setUserInfo(userResponse);
+
+        final FlightResponse flightResponse = this.flightService.getFlightByID(booking.getFlight());
+        bookingResponse.setFlightInfo(flightResponse);
+
+        this.populateBookingDerivedFields(bookingResponse);
+
+        final double loyaltyPoints = (bookingResponse.getTotalAmount() * Constants.LOYALTY_PERCENT) / 100;
+        final Loyalty loyalty = Loyalty.builder().points(loyaltyPoints).userId(bookingResponse.getUserId()).build();
+        this.loyaltyServiceImpl.addOrUpdateLoyalty(loyalty);
+
+        return bookingResponse;
     }
 
     @Override

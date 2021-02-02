@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface BookingService {
 
-    public List<BookingResponse> getAllBookings();
+    List<BookingResponse> getAllBookings();
 
-    public BookingResponse getBookingByID(int id);
+    BookingResponse getBookingByID(int id);
 
-    public BookingResponse addBooking(Booking booking);
+    BookingResponse addBooking(Booking booking);
 
-    public BookingResponse deleteBookingById(int id);
+    BookingResponse deleteBookingById(int id);
 }
