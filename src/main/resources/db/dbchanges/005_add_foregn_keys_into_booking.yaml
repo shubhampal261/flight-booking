@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005_add_foregn_keys_into_booking
+      author: shubhampal261
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: flight
+            baseTableName: booking
+            constraintName: booking_flight_fk
+            onDelete: CASCADE
+            onUpdate: CASCADE
+            referencedColumnNames: id
+            referencedTableName: flight
+            validate:  true
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: booking
+            constraintName: booking_user_fk
+            onDelete: CASCADE
+            onUpdate: CASCADE
+            referencedColumnNames: id
+            referencedTableName: users
+            validate: true

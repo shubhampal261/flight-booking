@@ -37,10 +37,9 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity addUser(@RequestBody User user) {
-        userServiceImpl.addUser(user);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
-        return ResponseEntity.created(location).build();
+    public UserResponse addUser(@RequestBody User user) {
+        final UserResponse userResponse = userServiceImpl.addUser(user);
+        return userResponse;
     }
 
     @DeleteMapping(path = "/{id}")

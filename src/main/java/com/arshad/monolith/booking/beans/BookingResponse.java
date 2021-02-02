@@ -5,26 +5,31 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import javax.persistence.*;
 import java.util.Date;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class UserResponse {
+public class BookingResponse {
 
     private int id;
 
-    private String email;
+    private int flight;
 
-    private String firstName;
+    private FlightResponse flightInfo;
 
-    private String lastName;
+    private int userId;
+
+    private UserResponse userInfo;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private Date dateOfBirth;
+    private Date date;
 
-    private String govtId;
+    private int numberOfSeats;
 
 }

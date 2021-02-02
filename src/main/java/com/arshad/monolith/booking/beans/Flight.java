@@ -1,6 +1,5 @@
 package com.arshad.monolith.booking.beans;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,31 +11,31 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "users")
+@Table(name = "flight")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class User {
+public class Flight {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(nullable = false)
-    private String email;
+    private String name;
 
-    @Column(name = "first_name", nullable = false)
-    private String firstName;
+    @Column(nullable = false)
+    private String origin;
 
-    @Column(name = "last_name")
-    private String lastName;
+    @Column(nullable = false)
+    private String destination;
 
-    @Column(name = "date_of_birth")
-    private Date dateOfBirth;
+    @Column(nullable = false)
+    private Double rate;
 
-    @Column(name = "govt_id")
-    private String govtId;
+    @Column(nullable = false)
+    private Integer capacity;
 
     @Column(name = "created_at", updatable = false, nullable = false)
     @CreationTimestamp
