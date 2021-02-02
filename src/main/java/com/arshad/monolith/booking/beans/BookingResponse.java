@@ -32,4 +32,6 @@ public class BookingResponse {
 
     private int numberOfSeats;
 
+    private Double totalAmount;
+
 }

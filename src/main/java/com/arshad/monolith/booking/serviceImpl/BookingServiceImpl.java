@@ -21,15 +21,26 @@ public class BookingServiceImpl implements BookingService {
 
     public List<BookingResponse> getAllBookings() {
         List<BookingResponse> bookingList = BookingMapper.INSTANCE.mapToBookingResponseModelList(bookingRepository.findAll());
+        this.populateBookingDerivedFields(bookingList);
         return bookingList;
     }
 
     public BookingResponse getBookingByID(int id) {
         Optional<Booking> bookingOptional = bookingRepository.findById(id);
         if (bookingOptional.isPresent()) {
-            return BookingMapper.INSTANCE.mapToBookingResponseModel(bookingOptional.get());
+            final BookingResponse bookingResponse = BookingMapper.INSTANCE.mapToBookingResponseModel(bookingOptional.get());
+            this.populateBookingDerivedFields(bookingResponse);
+            return bookingResponse;
         }
         return null;
+    }
+
+    private void populateBookingDerivedFields(final List<BookingResponse> bookingResponseList) {
+        bookingResponseList.forEach(e -> this.populateBookingDerivedFields(e));
+    }
+
+    private void populateBookingDerivedFields(final BookingResponse bookingResponse) {
+        bookingResponse.setTotalAmount(bookingResponse.getNumberOfSeats() * bookingResponse.getFlightInfo().getRate());
     }
 
     public BookingResponse addBooking(Booking booking) {
